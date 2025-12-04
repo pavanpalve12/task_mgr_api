@@ -1,5 +1,4 @@
 from server.models import tasks_models as tm
-import json
 
 # GET actions - LIST Tasks
 def list_tasks(user_id: int, status: str) -> list:
@@ -15,21 +14,34 @@ def list_tasks(user_id: int, status: str) -> list:
         print("No task records in db")
         return result_set
 
+
 # POST actions - ADD Tasks
 def add_task(task_details: dict) -> bool:
-    tm.insert_task(task_details = task_details)
-    return True
+    return tm.insert_task(task_details=task_details)
+
 
 # PUT actions - UPDATE Tasks
-def replace_task():
-    pass
+def replace_task(user_id: int, task_id: int, title: str, description: str, status: str, update_timestamp: str):
+    return tm.replace_task(
+        user_id=user_id, task_id=task_id,
+        title=title, description=description, status = status,
+        update_timestamp=update_timestamp
+    )
+
 
 # PATCH actions - UDPATE Task Attributes
-def update_task_status():
-    pass
+def update_task(user_id: int, task_id: int, update_details: dict, update_timestamp: str) -> bool:
+    return tm.update_task(
+        user_id=user_id, task_id=task_id,
+        update_details=update_details,
+        update_timestamp=update_timestamp
+    )
+
+
 # DELETE actions - DELETE Task
-def delete_task():
-    pass
+def delete_task(user_id: int, task_id: int, delete_timestamp: str) -> bool:
+    return tm.delete_task(user_id=user_id, task_id=task_id, delete_timestamp=delete_timestamp)
+
 
 # format response in json format
 def format_response(result_set: list, result_set_metadata: list) -> list:

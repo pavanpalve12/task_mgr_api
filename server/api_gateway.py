@@ -23,10 +23,14 @@ password = "pvn1291"
 login_key = "pvn1291"
 
 end_point_action = "GET/todo"
-
-title = "buy fresh fruits"
-description = "visit local produce market and buy fruits"
+# test Task details
+task_id = 4
+title = "attend gym session"
+description = "attend gym class at 6 am"
 status = ""
+
+# Patch parameters
+update_details = {"title": "study python", "description": "Complete python project"}
 
 # sign up user
 if end_point_action == "POST/register":
@@ -73,17 +77,55 @@ if end_point_action == "POST/todo":
     else:
         print("Task creation failed")
 
-# PUT - update entire task with new task
+# PUT - replace / update entire task with new task
 if end_point_action == "PUT/todo":
-    pass
+    task_details = {
+        "user_id": um.get_user_id_by_email(email=email),
+        "task_id": 4,
+        "title": title.title(),
+        "description": description.title(),
+        "status": "to-do",
+        "update_timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    }
+    flag = task_serv.replace_task(
+        user_id=task_details["user_id"],
+        task_id=task_details["task_id"],
+        title=task_details["title"],
+        description=task_details["description"],
+        status=task_details["status"],
+        update_timestamp=task_details["update_timestamp"]
+    )
+    if flag:
+        print(f"Task is replaced -> {task_details}")
+    else:
+        print("Task replace failed")
 
 # PATCH - update specific attributes - (title / description / status) -> ensure to update updated_At
 if end_point_action == "PATCH/todo":
-    pass
+    flag = task_serv.update_task(
+        user_id =um.get_user_id_by_email(email=email),
+        task_id= task_id,
+        #update_details= update_details,
+        update_details={"status": "done"},
+        update_timestamp= datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    )
+    if flag:
+        print("Task updated successfully -> ", update_details)
+    else:
+        print("Task update failed")
 
 # DELETE - delete task -> deactivate task by changing active_status -> update deactivatedAt
 if end_point_action == "DELETE/todo":
-    pass
+    flag = task_serv.delete_task(
+        user_id=um.get_user_id_by_email(email=email),
+        #task_id=task_id,
+        task_id=5,
+        delete_timestamp=datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    )
+    if flag:
+        print("Task deleted successfully")
+    else:
+        print("Task delete failed")
 
 # GET - list tasks - status (display tasks based on status or full table)
 if end_point_action == "GET/todo":
