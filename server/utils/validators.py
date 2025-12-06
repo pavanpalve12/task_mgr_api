@@ -23,6 +23,3 @@ def is_username_unique(username: str) -> bool:
     else:
         return False
 
-
-
-
