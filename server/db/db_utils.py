@@ -1,4 +1,4 @@
-from server.constants import config as config
+from server.constants import constant_values as config
 from sqlite3 import OperationalError
 import sqlite3
 
